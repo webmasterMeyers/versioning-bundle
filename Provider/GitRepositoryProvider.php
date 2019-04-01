@@ -38,7 +38,10 @@ class GitRepositoryProvider implements ProviderInterface
      */
     public function getVersion()
     {
-        return $this->getGitDescribe();
+        $version = $this->getGitDescribe();
+        // if "write to file" (and thus VersionProvider Priority is < -25)
+        fwrite(fopen($this->path . DIRECTORY_SEPARATOR . 'VERSION', 'w+b'),$version);
+        return $version;
     }
 
     /**
